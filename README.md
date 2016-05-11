@@ -1,2 +1,3 @@
-# robofontExtensionFeaPyFoFumEditor
-Extension for feaPy 
+# FeaPyFoFum Editor
+
+Editor for feaPy.
