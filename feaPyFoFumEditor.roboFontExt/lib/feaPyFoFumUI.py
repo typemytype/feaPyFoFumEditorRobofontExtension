@@ -5,6 +5,8 @@ from defconAppKit.controls.glyphLineView import GlyphLineView
 
 from vanilla import *
 
+from lib.tools.debugTools import ClassNameIncrementer
+
 
 class FeaturePreviewerGlyphSequenceEditText(GlyphSequenceEditText):
 
@@ -48,13 +50,14 @@ class FeaturePreviewer(Group):
             dict(title="Alternates", width=100)
         ]
         self.previewTabs[1].recordsList = List((0, 0, -0, -0),
-                                [],
-                                columnDescriptions=columnDescriptions,
-                                showColumnTitles=True,
-                                drawVerticalLines=True,
-                                drawFocusRing=False)
+            [],
+            columnDescriptions=columnDescriptions,
+            showColumnTitles=True,
+            drawVerticalLines=True,
+            drawFocusRing=False
+        )
         # controls
-        self.glyphLineControls = OpenTypeControlsView((0, topHeight, left+1, 0),
+        self.glyphLineControls = OpenTypeControlsView((0, topHeight, left + 1, -0),
                                 self.glyphLineViewControlsCallback)
 
     def setFont(self, font):
@@ -164,10 +167,10 @@ class SettingsToolbarButton(AppKit.NSButton):
         self._callbackMap = {}
         self.setBordered_(False)
         self.setTitle_("")
-        self._makeMenu(items)
+        self._makeMenu_(items)
         self.setImage_(AppKit.NSImage.imageNamed_("prefToolbarMisc"))
 
-    def _makeMenu(self, items):
+    def _makeMenu_(self, items):
         self.popUpCell = AppKit.NSPopUpButtonCell.alloc().initTextCell_pullsDown_("", True)
         self.popUpCell.setUsesItemFromMenu_(False)
         self.popUpCell.addItemWithTitle_("Settings...")

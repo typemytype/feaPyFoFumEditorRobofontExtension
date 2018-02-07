@@ -27,14 +27,14 @@ class CompositorUFOFont(compositor.Font):
                 del self.source["GPOS"]
         try:
             addOpenTypeFeatures(self.source, feaPath)
-        except:
+        except Exception:
             import traceback
-            print traceback.format_exc(5)
+            print(traceback.format_exc(5))
         finally:
             os.remove(feaPath)
             # XXX hacking into fontTools
             for tableName in ("GDEF", "GSUB", "GPOS"):
-                if self.source.has_key(tableName):
+                if tableName in self.source:
                     table = self.source[tableName]
                     compiled = table.compile(self.source)
                     table.decompile(compiled, self.source)

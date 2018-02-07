@@ -12,7 +12,20 @@ from lib.features.featureEditor import DoodleFeatureTextEditor
 from feaPyFoFumLexer import FeaPyFoFumLexer, languagesIDEBehavior
 from compositorUFOFont import CompositorUFOFont
 
+import feaPyFoFumUI
+try:
+    import importlib
+    importlib.reload(feaPyFoFumUI)
+except:
+    pass
+
 from feaPyFoFumUI import FeaturePreviewer, SettingsToolbarButton
+
+
+import mojo.roboFont
+
+if mojo.roboFont.version < "3.0":
+    SplitView = SplitView2
 
 
 class FeaPyFoFumEditor(BaseWindowController):
@@ -33,57 +46,65 @@ class FeaPyFoFumEditor(BaseWindowController):
         self.feaText = DoodleFeatureTextEditor((0, 0, -0, -0), readOnly=True)
         self.feaText.setLexer(FeaPyFoFumLexer())
 
-        self.previewer = FeaturePreviewer((0, 0, -0, -0))
+        self.previewer = FeaturePreviewer((0, 0, -0, 1000))
         self.previewer.glyphLineUpdateButton = Button((-75, 11, 65, 20), "Update", callback=self.glyphLineUpdateButtonCallback)
 
         self.w = Window((700, 600), minSize=(400, 400))
 
         toolbarItems = [
-            dict(itemIdentifier="compile",
+            dict(
+                itemIdentifier="compile",
                 label="Compile FeaPy",
                 imageNamed="toolbarRun",
                 callback=self.toolbarCompile,
-                ),
-            dict(itemIdentifier="comment",
+            ),
+            dict(
+                itemIdentifier="comment",
                 label="Comment",
                 imageNamed="toolbarComment",
                 callback=self.toolbarComment,
-                ),
-            dict(itemIdentifier="uncomment",
+            ),
+            dict(
+                itemIdentifier="uncomment",
                 label="Uncomment",
                 imageNamed="toolbarUncomment",
                 callback=self.toolbarUncomment,
-                ),
-            dict(itemIdentifier="indent",
+            ),
+            dict(
+                itemIdentifier="indent",
                 label="Indent",
                 imageNamed="toolbarIndent",
                 callback=self.toolbarIndent,
-                ),
-            dict(itemIdentifier="dedent",
+            ),
+            dict(
+                itemIdentifier="dedent",
                 label="Dedent",
                 imageNamed="toolbarDedent",
                 callback=self.toolbarDedent,
-                ),
+            ),
             dict(itemIdentifier=AppKit.NSToolbarSpaceItemIdentifier),
-            dict(itemIdentifier="FeaPytify",
+            dict(
+                itemIdentifier="FeaPytify",
                 label="FeaPytify",
                 imageNamed="toolbarComment",
                 callback=self.toolbarFeaPytify,
-                ),
+            ),
             dict(itemIdentifier=AppKit.NSToolbarSpaceItemIdentifier),
-            dict(itemIdentifier="save",
+            dict(
+                itemIdentifier="save",
                 label="Save In Font",
                 imageNamed="toolbarScriptSave",
                 callback=self.toolbarSaveInFont,
-                ),
+            ),
             dict(itemIdentifier=AppKit.NSToolbarFlexibleSpaceItemIdentifier),
-            dict(itemIdentifier="settings",
+            dict(
+                itemIdentifier="settings",
                 label="Settings...",
                 view=SettingsToolbarButton([
-                            ("Live", True, self.toolbarSettingsLive),
-                            ]),
-                ),
-            ]
+                    ("Live", True, self.toolbarSettingsLive),
+                ]),
+            ),
+        ]
 
         self.w.addToolbar(toolbarIdentifier="FeaPyTesterToolBar", toolbarItems=toolbarItems, addStandardItems=False)
 
@@ -91,13 +112,13 @@ class FeaPyFoFumEditor(BaseWindowController):
             dict(view=self.feaPyEditor, identifier="feaPyEditor", minSize=100, canCollapse=False),
             dict(view=self.feaText, identifier="feaText", minSize=100, canCollapse=False),
         ]
-        self.editorSplit = SplitView2((0, 0, -0, -0), paneDescriptors, dividerStyle="thin")
+        self.editorSplit = SplitView((0, 0, -0, -0), paneDescriptors, dividerStyle="thin")
 
         paneDescriptors = [
             dict(view=self.editorSplit, identifier="editor", minSize=100, canCollapse=False),
             dict(view=self.previewer, identifier="previewer", minSize=100, canCollapse=False),
         ]
-        self.w.splitView = SplitView2((0, 0, -0, -0), paneDescriptors, dividerStyle="thin", isVertical=False)
+        self.w.splitView = SplitView((0, 0, -0, -0), paneDescriptors, dividerStyle="thin", isVertical=False)
 
         # observer current document changed
         addObserver(self, "fontBecameCurrent", "fontBecameCurrent")
@@ -115,9 +136,9 @@ class FeaPyFoFumEditor(BaseWindowController):
             return
         try:
             fea = compileFeatures(self.feaPyEditor.get(), self._font, compileReferencedFiles=True)
-        except:
+        except Exception:
             import traceback
-            print traceback.format_exc(5)
+            print(traceback.format_exc(5))
             fea = ""
         self.feaText.set(fea)
 
@@ -229,6 +250,7 @@ class FeaPyFoFumEditor(BaseWindowController):
         removeObserver(self, "fontResignCurrent")
         self._unsubscribeFont()
         super(self.__class__, self).windowCloseCallback(sender)
+
 
 if __name__ == "__main__":
     fea = """languagesystem DFLT dflt;
