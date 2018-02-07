@@ -5,8 +5,6 @@ from defconAppKit.controls.glyphLineView import GlyphLineView
 
 from vanilla import *
 
-from lib.tools.debugTools import ClassNameIncrementer
-
 
 class FeaturePreviewerGlyphSequenceEditText(GlyphSequenceEditText):
 
