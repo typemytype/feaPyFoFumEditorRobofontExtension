@@ -13,11 +13,6 @@ from feaPyFoFumLexer import FeaPyFoFumLexer, languagesIDEBehavior
 from compositorUFOFont import CompositorUFOFont
 
 import feaPyFoFumUI
-try:
-    import importlib
-    importlib.reload(feaPyFoFumUI)
-except:
-    pass
 
 from feaPyFoFumUI import FeaturePreviewer, SettingsToolbarButton
 
@@ -261,7 +256,7 @@ languagesystem latn dflt;
 # for name in font.glyphOrder:
 #     if name.endswith(".cap"):
 #         caseWriter.substitution(name.split(".")[0], name)
-# print writer.write()
+# print(writer.write())
 # <<<
 
 feature liga {
@@ -269,7 +264,7 @@ feature liga {
     # for name in font.glyphOrder:
     #     if "_" in name:
     #         writer.substitution(name.replace("_", " "), name)
-    # print writer.write()
+    # print(writer.write())
     # <<<
 } liga;
 
